@@ -1,0 +1,30 @@
+steps:
+  # Step 1: Clone the repository from Bitbucket
+  - name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'git'
+    args: ['clone', 'https://bitbucket.org/<your-repo>.git']
+
+  # Step 2: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'jfrog.artifactory.com/<repo>/your-image:${SHORT_SHA}', '.']
+
+  # Step 3: Push Docker image to Artifactory
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'jfrog.artifactory.com/<repo>/your-image:${SHORT_SHA}']
+    env:
+      - 'DOCKER_CONFIG=/root/.docker/'
+
+  # Step 4: Deploy the image to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'run', 'deploy', 'your-cloud-run-service',
+      '--image', 'jfrog.artifactory.com/<repo>/your-image:${SHORT_SHA}',
+      '--region', 'us-central1',
+      '--platform', 'managed',
+      '--allow-unauthenticated'
+    ]
+
+# Substitutions allow easy customization of the image tag and project details.
+substitutions:
+  _ARTIFACTORY_REPO: "jfrog.artifactory.com/<repo>"
+  _CLOUD_RUN_SERVICE: "your-cloud-run-service"
