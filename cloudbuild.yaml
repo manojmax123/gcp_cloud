@@ -5,8 +5,8 @@ steps:
 
   # Step 3: Push Docker image to Artifactory
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:v1.0.0', '.']
-    
+    args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:v1.0.0']
+
   # Step 4: Deploy the image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args: [
