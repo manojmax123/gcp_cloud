@@ -1,16 +1,12 @@
 steps:
-  steps:
-  # Step 1: Build Docker image with BUILD_ID as the tag
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:${BUILD_ID}', '.']
+# Step 2: Build Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:${BUILD_ID}', '.']
 
-  # Step 2: Push Docker image to Artifactory with BUILD_ID
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:${BUILD_ID}']
-    
-  # Step 3: Push Docker image to Artifactory
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:$BUILD_TAG']
+# Step 3: Push Docker image to Artifactory
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:${BUILD_ID}']
+
   # Step 4: Deploy the image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args: [
