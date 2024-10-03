@@ -3,7 +3,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/ikomg:${BUILD_ID}', '.']
 
-  # Step 2: Push Docker image with the BUILD_ID as the tag
+  # Step 2: Push Docker image with the BUILD_ID as the
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/ikomg:${BUILD_ID}']
 
