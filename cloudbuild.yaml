@@ -14,9 +14,11 @@ steps:
       - 'deploy'
       - 'ikomg'  # Replace with your Cloud Run service name
       - '--image'
-      - 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/ikomg:${BUILD_ID}'  # Use the correct GCR image
+      - 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/ikomg:${BUILD_ID}'
       - '--region'
       - 'me-central1'
       - '--platform'
       - 'managed'
       - '--allow-unauthenticated'
+      - '--quiet'  # Optional: Suppress interactive prompts
+
