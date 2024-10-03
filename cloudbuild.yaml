@@ -7,7 +7,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/ikomg:${BUILD_ID}']
 
-  # Step 3: Deploy the image to Cloud Run
+  # Step 3: Deploy the image to Cloud 
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'run'
