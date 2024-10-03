@@ -7,17 +7,16 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/ikomg:${BUILD_ID}']
 
-# Step 4: Deploy the image to Cloud Run in gcp
+  # Step 3: Deploy the image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: [
-      'run', 'deploy', 'your-cloud-run-service',
-      '--image', 'jfrog.artifactory.com/<repo>/your-image:${SHORT_SHA}',
-      '--region', 'us-central1',
-      '--platform', 'managed',
-      '--allow-unauthenticated'
-    ]
-
-# Substitutions allow easy customization of the image tag and project details.
-substitutions:
-  _ARTIFACTORY_REPO: "jfrog.artifactory.com/<repo>"
-  _CLOUD_RUN_SERVICE: "your-cloud-run-service"
+    args:
+      - 'run'
+      - 'deploy'
+      - 'ikomg'  # Replace with your Cloud Run service name
+      - '--image'
+      - 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/ikomg:${BUILD_ID}'  # Use the correct GCR image
+      - '--region'
+      - 'me-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
