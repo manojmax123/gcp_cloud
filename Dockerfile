@@ -1,10 +1,17 @@
-# Use the latest version of Nginx as the base image
+# Use the latest version of the Apache HTTP Server as the base image
 FROM httpd:latest
-WORKDIR /var/www/html
-RUN rm -rf /var/www/html/index.html
-COPY . .
-WORKDIR /var/www/html                 
-RUN service apache2 restart
-EXPOSE 80
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 
+# Set the working directory for the Apache document root
+WORKDIR /var/www/html/
+
+# Remove the default index.html file (optional, as it will be overwritten)
+RUN rm -f index.html
+
+# Copy all files from the current directory to the Apache document root
+COPY . .
+
+# Expose port 80 for the Apache server
+EXPOSE 80
+
+# Start Apache in the foreground
+CMD ["httpd-foreground"]
