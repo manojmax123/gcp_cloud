@@ -7,7 +7,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:${BUILD_ID}']
 
-# Step 4: Deploy the image to Cloud Run
+# Step 4: Deploy the image to Cloud Run in gcp
   - name: 'gcr.io/cloud-builders/gcloud'
     args: [
       'run', 'deploy', 'your-cloud-run-service',
