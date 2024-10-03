@@ -1,11 +1,16 @@
 steps:
-  # Step 2: Build Docker image
+  # Step 1: Set an environment variable for the build version using the build ID
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args: ['-c', 'export BUILD_TAG=$(date +%Y%m%d-%H%M%S)']
+
+  # Step 2: Build Docker image with automatic build number
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:v2.0.0', '.']
+    args: ['build', '-t', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:$BUILD_TAG', '.']
 
   # Step 3: Push Docker image to Artifactory
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:v2.0.0']
+    args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:$BUILD_TAG']
   # Step 4: Deploy the image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args: [
