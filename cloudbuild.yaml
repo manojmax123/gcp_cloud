@@ -1,12 +1,31 @@
 steps:
-# Step 2: Build Docker image
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:${BUILD_ID}', '.']
+  # Step 1: Generate a BUILD_TAG using the current timestamp
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        BUILD_TAG=$(date +%Y%m%d-%H%M%S)
+        echo $BUILD_TAG > /workspace/build_tag.txt
 
-# Step 3: Push Docker image to Artifactory
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:${BUILD_ID}']
-  
+  # Step 2: Build Docker image with the dynamic BUILD_TAG
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        BUILD_TAG=$(cat /workspace/build_tag.txt)
+        docker build -t asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:$BUILD_TAG .
+
+  # Step 3: Push Docker image to the registry with the dynamic BUILD_TAG
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        BUILD_TAG=$(cat /workspace/build_tag.txt)
+        docker push asia-south1-docker.pkg.dev/logical-hallway-412312/creatorott/manoj:$BUILD_TAG
+        
 # Step 4: Deploy the image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args: [
