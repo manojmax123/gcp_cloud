@@ -1,8 +1,10 @@
 # Use the official Nginx image as a 
 FROM nginx:latest
 
+Run rm -rf index.html
+
 # Copy the index.html file to the Nginx html directory
-COPY index.html /var/www/html/index.html
+COPY index.html /var/www/html/
 
 # Expose port 80
 EXPOSE 80
